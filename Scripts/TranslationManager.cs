@@ -14,7 +14,7 @@ public class TranslationManager : MonoBehaviour
     public Dictionary<string, string> albanianTranslations = new Dictionary<string, string>();
 
     // Current language
-    private Language currentLanguage = Language.English;
+    public Language currentLanguage = Language.English;
 
     // TMP Text fields in the scene
     private TMP_Text[] allTexts;
