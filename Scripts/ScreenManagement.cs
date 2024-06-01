@@ -6,6 +6,7 @@ public class ScreenManagement : MonoBehaviour
 {
     public GameObject mainScreen;
     public GameObject predictTheFuture;
+    public GameObject location;
 
     public void doExitGame()
     {
@@ -16,11 +17,20 @@ public class ScreenManagement : MonoBehaviour
     {
         mainScreen.SetActive(false);
         predictTheFuture.SetActive(true);
+        location.SetActive(false);
     }
 
     public void goToMainScreen()
     {
         mainScreen.SetActive(true);
         predictTheFuture.SetActive(false);
+        location.SetActive(false);
+    }
+
+    public void locationScreen()
+    {
+        mainScreen.SetActive(false);
+        predictTheFuture.SetActive(false);
+        location.SetActive(true);
     }
 }
