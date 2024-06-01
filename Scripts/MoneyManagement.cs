@@ -1,13 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MoneyManagement : MonoBehaviour
 {
-    //do array looping thorugh all children of scroll view panel
     public TMP_InputField incomeField;
     public int income;
     public TMP_Text totalExpField;
@@ -44,93 +41,88 @@ public class MoneyManagement : MonoBehaviour
     public Image savingsBar;
     public Image moneyLeftBar;
 
-    // Start is called before the first frame update
     void Start()
     {
-        //Application.targetFrameRate = 30;
-        income = PlayerPrefs.GetInt("Income");
-        incomeField.text = Convert.ToString(income);
-        rent = PlayerPrefs.GetInt("Rent");
-        rentField.text = Convert.ToString(rent);
-        utilities = PlayerPrefs.GetInt("Utilities");
-        utilitiesField.text = Convert.ToString(utilities);
-        ent = PlayerPrefs.GetInt("Entertainment");
-        entField.text = Convert.ToString(ent);
-        med = PlayerPrefs.GetInt("Medical");
-        medField.text = Convert.ToString(med);
-        groceries = PlayerPrefs.GetInt("Groceries");
-        groceriesField.text = Convert.ToString(groceries);
-        transportation = PlayerPrefs.GetInt("Transportation");
-        transportationField.text = Convert.ToString(transportation);
-        persCare = PlayerPrefs.GetInt("PersonalCare");
-        persCareField.text = Convert.ToString(persCare);
-        subs = PlayerPrefs.GetInt("Subscriptions");
-        subsField.text = Convert.ToString(subs);
-        insurance = PlayerPrefs.GetInt("Insurance");
-        insuranceField.text = Convert.ToString(insurance);
-        debt = PlayerPrefs.GetInt("Debt");
-        debtField.text = Convert.ToString(debt);
-        misc = PlayerPrefs.GetInt("Miscellaneous");
-        miscField.text = Convert.ToString(misc);
-        holidays = PlayerPrefs.GetInt("Holidays");
-        holidaysField.text = Convert.ToString(holidays);
-        savings = PlayerPrefs.GetInt("Savings");
-        savingsField.text = Convert.ToString(savings);
+        income = PlayerPrefs.GetInt("Income", 0);
+        incomeField.text = income.ToString();
+        rent = PlayerPrefs.GetInt("Rent", 0);
+        rentField.text = rent.ToString();
+        utilities = PlayerPrefs.GetInt("Utilities", 0);
+        utilitiesField.text = utilities.ToString();
+        ent = PlayerPrefs.GetInt("Entertainment", 0);
+        entField.text = ent.ToString();
+        med = PlayerPrefs.GetInt("Medical", 0);
+        medField.text = med.ToString();
+        groceries = PlayerPrefs.GetInt("Groceries", 0);
+        groceriesField.text = groceries.ToString();
+        transportation = PlayerPrefs.GetInt("Transportation", 0);
+        transportationField.text = transportation.ToString();
+        persCare = PlayerPrefs.GetInt("PersonalCare", 0);
+        persCareField.text = persCare.ToString();
+        subs = PlayerPrefs.GetInt("Subscriptions", 0);
+        subsField.text = subs.ToString();
+        insurance = PlayerPrefs.GetInt("Insurance", 0);
+        insuranceField.text = insurance.ToString();
+        debt = PlayerPrefs.GetInt("Debt", 0);
+        debtField.text = debt.ToString();
+        misc = PlayerPrefs.GetInt("Miscellaneous", 0);
+        miscField.text = misc.ToString();
+        holidays = PlayerPrefs.GetInt("Holidays", 0);
+        holidaysField.text = holidays.ToString();
+        savings = PlayerPrefs.GetInt("Savings", 0);
+        savingsField.text = savings.ToString();
 
-        savingsBar.fillAmount = (float)savings / (float)income;
-        moneyLeftBar.fillAmount = (float)moneyLeft / (float)income;
-
-        totalExpenses = rent + utilities + ent + med + groceries + transportation + persCare + subs + insurance + debt + misc;
-        totalExpField.text = Convert.ToString(totalExpenses);
-
-        moneyLeft = income - totalExpenses;
-        moneyLeftField.text = Convert.ToString(moneyLeft);
+        UpdateFields();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        income = Convert.ToInt32(incomeField.text);
-        PlayerPrefs.SetInt("Income", income);
+        income = GetValueFromField(incomeField, "Income");
+        rent = GetValueFromField(rentField, "Rent");
+        utilities = GetValueFromField(utilitiesField, "Utilities");
+        ent = GetValueFromField(entField, "Entertainment");
+        med = GetValueFromField(medField, "Medical");
+        groceries = GetValueFromField(groceriesField, "Groceries");
+        transportation = GetValueFromField(transportationField, "Transportation");
+        persCare = GetValueFromField(persCareField, "PersonalCare");
+        subs = GetValueFromField(subsField, "Subscriptions");
+        insurance = GetValueFromField(insuranceField, "Insurance");
+        debt = GetValueFromField(debtField, "Debt");
+        misc = GetValueFromField(miscField, "Miscellaneous");
+        holidays = GetValueFromField(holidaysField, "Holidays");
+        savings = GetValueFromField(savingsField, "Savings");
 
-        rent = Convert.ToInt32(rentField.text);
-        PlayerPrefs.SetInt("Rent", rent);
-        utilities = Convert.ToInt32(utilitiesField.text);
-        PlayerPrefs.SetInt("Utilities", utilities);
-        ent = Convert.ToInt32(entField.text);
-        PlayerPrefs.SetInt("Entertainment", ent);
-        med = Convert.ToInt32(medField.text);
-        PlayerPrefs.SetInt("Medical", med);
-        groceries = Convert.ToInt32(groceriesField.text);
-        PlayerPrefs.SetInt("Groceries", groceries);
-        transportation = Convert.ToInt32(transportationField.text);
-        PlayerPrefs.SetInt("Transportation", transportation);
-        persCare = Convert.ToInt32(persCareField.text);
-        PlayerPrefs.SetInt("PersonalCare", persCare);
-        subs = Convert.ToInt32(subsField.text);
-        PlayerPrefs.SetInt("Subscriptions", subs);
-        insurance = Convert.ToInt32(insuranceField.text);
-        PlayerPrefs.SetInt("Insurance", insurance);
-        debt = Convert.ToInt32(debtField.text);
-        PlayerPrefs.SetInt("Debt", debt);
-        misc = Convert.ToInt32(miscField.text);
-        PlayerPrefs.SetInt("Miscellaneous", misc);
-        holidays = Convert.ToInt32(holidaysField.text);
-        PlayerPrefs.SetInt("Holidays", holidays);
-        savings = Convert.ToInt32(savingsField.text);
-        PlayerPrefs.SetInt("Savings", savings);
+        UpdateFields();
+    }
+
+    int GetValueFromField(TMP_InputField field, string key)
+    {
+        int value;
+        if (string.IsNullOrEmpty(field.text))
+        {
+            value = 0;
+        }
+        else
+        {
+            value = Convert.ToInt32(field.text);
+        }
+        PlayerPrefs.SetInt(key, value);
+        return value;
+    }
+
+    void UpdateFields()
+    {
+        totalExpenses = rent + utilities + ent + med + groceries + transportation + persCare + subs + insurance + debt + misc;
+        totalExpField.text = totalExpenses.ToString();
+
+        moneyLeft = income - totalExpenses - savings;
+        moneyLeftField.text = moneyLeft.ToString();
 
         if (savings > income - totalExpenses)
         {
             savings = income - totalExpenses;
-            savingsField.text = Convert.ToString(income - totalExpenses);
+            savingsField.text = savings.ToString();
         }
-
-        totalExpenses = rent + utilities + ent + med + groceries + transportation + persCare + subs + insurance + debt + misc;
-        totalExpField.text = Convert.ToString(totalExpenses);
-
-        moneyLeft = income - totalExpenses - savings;
-        moneyLeftField.text = Convert.ToString(moneyLeft);
 
         if (moneyLeft < totalExpenses)
         {
@@ -140,12 +132,15 @@ public class MoneyManagement : MonoBehaviour
         {
             tips.text = "Tip: You are doing a great job at managing your income. You surely deserve an applause! See if you can start investing some of that.";
         }
+        else
+        {
+            tips.text = string.Empty;
+        }
 
         CheckAndDisplayTips();
 
-        if (savings != 0) savingsBar.fillAmount = (float)savings / (float)income;
-        if (moneyLeft != 0) moneyLeftBar.fillAmount = (float)moneyLeft / (float)income;
-        else moneyLeftBar.fillAmount = 0;
+        savingsBar.fillAmount = savings != 0 ? (float)savings / income : 0;
+        moneyLeftBar.fillAmount = moneyLeft != 0 ? (float)moneyLeft / income : 0;
     }
 
     void CheckAndDisplayTips()
@@ -162,8 +157,7 @@ public class MoneyManagement : MonoBehaviour
                 tips.text = "Tip: You are doing a great job at managing your income. You surely deserve an applause! See if you can start investing some of that.";
             }
         }
-
-        if (!allFieldsNonZero)
+        else
         {
             tips.text = "Tip: Please ensure all expense fields are filled out with non-zero values for accurate tips.";
         }

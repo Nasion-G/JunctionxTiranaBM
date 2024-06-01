@@ -32,6 +32,7 @@ public class PredictTheFuture : MonoBehaviour
         float futureValue = monthlyDeposit * (Mathf.Pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate;
 
         // Display the result
-        result.text = futureValue.ToString("F0");  // Format to 2 decimal places
+        if (futureValue > 0) result.text = futureValue.ToString("F0");
+        else result.text = "";
     }
 }
